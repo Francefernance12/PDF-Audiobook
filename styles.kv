@@ -1,0 +1,308 @@
+# Splash screen
+<SplashScreen>
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1  # Dark background
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 30
+        padding: 50
+        Label:
+            text: "Welcome to AudioBook!"
+            font_size: "36sp"
+            color: 0.3, 0.8, 1, 1  # Light blue text
+            bold: True
+        Label:
+            text: "Loading..."
+            font_size: "20sp"
+            color: 0.7, 0.7, 0.7, 1  # Light gray text
+
+
+# The main window
+<MainScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1  # Dark background
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        # window properties
+        orientation: 'vertical'
+        padding: 30
+        spacing: 20
+
+        # Title
+        Label:
+            text: 'PDF Audiobook'
+            font_size: '32sp'
+            size_hint_y: None
+            height: '60dp'
+            color: 0.3, 0.8, 1, 1  # Light blue text
+            bold: True
+
+        # Content area
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 0.7
+            padding: 20
+            canvas.before:
+                Color:
+                    rgba: 0.15, 0.15, 0.15, 1  # Slightly lighter dark background
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [15, 15, 15, 15]
+
+            Label:
+                text: root.main_text
+                text_size: self.width - dp(40), None
+                size_hint_y: None
+                height: self.texture_size[1]
+                color: 0.9, 0.9, 0.9, 1  # Light text
+                padding: 20, 20
+                halign: 'center'  # Horizontal center
+                valign: 'middle'  # Vertical center
+                pos_hint: {'center_x': 0.5}  # Center in parent
+
+            Label:
+                text: root.file_path
+                size_hint_y: None
+                height: '40dp'
+                color: 0.7, 0.7, 0.7, 1  # Light gray text
+
+        # Buttons container
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: '50dp'
+            spacing: 20
+            padding: [20, 0]
+
+            Button:
+                text: 'Text Viewer'
+                size_hint_x: 0.5
+                background_color: 0.3, 0.8, 1, 1  # Light blue button
+                background_normal: ''
+                color: 0.1, 0.1, 0.1, 1  # Dark text
+                on_press: root.switch_to_screen()
+                canvas.before:
+                    Color:
+                        rgba: 0.3, 0.8, 1, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [10, 10, 10, 10]
+
+            Button:
+                text: 'Choose a File'
+                size_hint_x: 0.5
+                background_color: 0.2, 0.9, 0.5, 1  # Light green button
+                background_normal: ''
+                color: 0.1, 0.1, 0.1, 1  # Dark text
+                on_press: root.open_file()
+                canvas.before:
+                    Color:
+                        rgba: 0.2, 0.9, 0.5, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [10, 10, 10, 10]
+
+
+# Displays PDF content
+<TextScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1  # Dark background
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 30
+        spacing: 20
+
+        # Title
+        Label:
+            text: 'PDF Content'
+            font_size: '32sp'
+            size_hint_y: None
+            height: '60dp'
+            color: 0.3, 0.8, 1, 1  # Light blue text
+            bold: True
+
+        # Text content area
+        ScrollView:
+            size_hint_y: 0.85
+            do_scroll_x: False
+            bar_width: 10
+            bar_color: 0.3, 0.8, 1, 0.9  # Light blue scrollbar
+            bar_inactive_color: 0.3, 0.8, 1, 0.2
+            effect_cls: "ScrollEffect"
+            canvas.before:
+                Color:
+                    rgba: 0.15, 0.15, 0.15, 1  # Slightly lighter dark background
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [15, 15, 15, 15]
+            
+            Label:
+                text: "Select PDF in main screen" if not root.has_pdf else root.text
+                text_size: self.width - dp(40), None
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding: 20, 20
+                color: 0.9, 0.9, 0.9, 1  # Light text
+
+        # Button container
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: (None, None)
+            size: dp(200), dp(180)  # Adjusted for 3 buttons with spacing
+            spacing: dp(10)  # Space between buttons
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            padding: dp(10)
+
+            # Play button
+            Button:
+                text: 'Play'
+                size_hint: (1, 1)  # Take equal space in the box
+                background_color: 0.3, 0.8, 1, 1  # Light blue button
+                background_normal: ''
+                color: 0.1, 0.1, 0.1, 1  # Dark text
+                on_press: root.create_tts() if not root.check_file_exists() else root.play_audio()
+                disabled: root.play_button_disabled if not root.has_pdf else False
+                opacity: 0.5 if self.disabled else 1
+                canvas.before:
+                    Color:
+                        rgba: (0.3, 0.8, 1, 0.5) if self.disabled else (0.3, 0.8, 1, 1)
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [15, 15, 15, 15]  # Increased radius for better mobile look
+            
+            # Stop button
+            Button:
+                text: 'Stop'
+                size_hint: (1, 1)  # Take equal space in the box
+                background_color: 0.3, 0.8, 1, 1  # Light blue button
+                background_normal: ''
+                color: 0.1, 0.1, 0.1, 1  # Dark text
+                on_press: root.stop_audio()
+                canvas.before:
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [15, 15, 15, 15]  # Increased radius for better mobile look
+            
+            # Back button
+            Button:
+                text: 'Back to Main'
+                size_hint: (1, 1)  # Take equal space in the box
+                background_color: 0.3, 0.8, 1, 1  # Light blue button
+                background_normal: ''
+                color: 0.1, 0.1, 0.1, 1  # Dark text
+                on_press: root.switch_to_main()
+                canvas.before:
+                    Color:
+                        rgba: 0.3, 0.8, 1, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [15, 15, 15, 15]  # Increased radius for better mobile look
+
+
+
+####### Popups
+# The popup window/root
+<FileSelectorPopup@Popup>:
+    title: 'Select a PDF File'
+    title_color: 0.3, 0.8, 1, 1  # Light blue title
+    title_size: '20sp'
+    size_hint: 0.8, 0.8
+    separator_color: 0.3, 0.8, 1, 1  # Light blue separator
+    background_color: 0.15, 0.15, 0.15, 1  # Dark background
+    overlay_color: 0, 0, 0, 0.7  # Semi-transparent dark overlay
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        FileChooserListView:
+            id: filechooser
+            filters: ['*.pdf']
+            canvas.before:
+                Color:
+                    rgba: 0.12, 0.12, 0.12, 1  # Slightly lighter than main background
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            
+            # Basic properties
+            dirselect: False
+            font_name: 'Roboto'
+
+        BoxLayout:
+            size_hint_y: None
+            height: '50dp'
+            spacing: 20
+
+            Button:
+                text: 'Cancel'
+                background_color: 0.9, 0.3, 0.3, 1  # Light red button
+                background_normal: ''
+                color: 0.1, 0.1, 0.1, 1  # Dark text
+                on_press: root.dismiss()
+                canvas.before:
+                    Color:
+                        rgba: 0.9, 0.3, 0.3, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [10, 10, 10, 10]
+
+            Button:
+                text: 'Load'
+                background_color: 0.2, 0.9, 0.5, 1  # Light green button
+                background_normal: ''
+                color: 0.1, 0.1, 0.1, 1  # Dark text
+                on_press: 
+                    root.load(filechooser.path, filechooser.selection) if root.load else None
+                    root.dismiss()
+                canvas.before:
+                    Color:
+                        rgba: 0.2, 0.9, 0.5, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [10, 10, 10, 10]
+
+
+# Loading popup after creating audio
+<loading_tts_popup@Popup>:
+    title: 'Creating Audio'
+    title_color: 0.3, 0.8, 1, 1  # Light blue title
+    title_size: '20sp'
+    size_hint: 0.5, 0.3
+    separator_color: 0.3, 0.8, 1, 1  # Light blue separator
+    background_color: 0.15, 0.15, 0.15, 1  # Dark background
+    overlay_color: 0, 0, 0, 0.7  # Semi-transparent dark overlay
+    
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(10)
+        
+        Label:
+            text: 'Please wait while the audio is being created...'
+            color: 0.3, 0.8, 1, 1  # Light blue text
+            font_size: '16sp'
+            text_size: self.width - dp(40), None
+            size_hint_y: None
+            height: self.texture_size[1]
