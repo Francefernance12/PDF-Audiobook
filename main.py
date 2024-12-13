@@ -47,18 +47,18 @@ class MainScreen(Screen):
         # Open the file selector popup
         popup = FileSelectorPopup()
         # Set the load callback with the popup instance
-        popup.load = lambda path, filename: self.load_file(path, filename, popup)
+        popup.load = lambda path, selection: self.load_file(path, selection, popup)
         popup.open()
 
-    def load_file(self, path, filename, popup):
+    def load_file(self, path, selection, popup):
         print("Loading file")
-        if not filename:
+        if not selection:
             print(f"No file selected from {path}")
             return
 
         try:
             # Load the selected PDF file
-            self.file_path = filename[0]
+            self.file_path = selection[0]
             print(f"Attempting to load: {self.file_path}")
             
             # dismiss popup first
