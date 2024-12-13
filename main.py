@@ -8,7 +8,7 @@ from kivy.uix.popup import Popup
 from kivy.clock import Clock
 from kivy.uix.screenmanager import ScreenManager, Screen
 # Other
-from threading import Thread, Lock
+from threading import Thread
 import traceback
 import os
 # Project Files
