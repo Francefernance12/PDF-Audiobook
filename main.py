@@ -18,7 +18,7 @@ from app.mp3Player import MP3Player
 
 # Intro splash screen
 class SplashScreen(Screen):
-    def on_enter(self):
+    def on_enter(self, *args):
         Clock.schedule_once(self.switch_to_main, 3)
 
     def switch_to_main(self, *args):
