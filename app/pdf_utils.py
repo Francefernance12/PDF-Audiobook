@@ -1,6 +1,7 @@
 from PyPDF2 import PdfReader
 import re
 
+# Function to clean up the text for better readability for user and tts
 def clean_text(text):
     # Add space between a lowercase followed by an uppercase letter (camelCase or joined words)
     text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
@@ -43,12 +44,15 @@ def loadPDF(filename):
             page_text = page.extract_text()
             if page_text:
                 text += clean_text(page_text) + "\n\n"  # Add double newline between pages
-        return text.strip()
+
+        if text is not None:
+            if len(text.encode('utf-8')) > 5000:
+                print("Text is too long. Limiting to 5000 characters.")
+                text = text[:5000]  # Limit to 5000 characters
+                print(text)
+            return text
+        
     except FileNotFoundError:
         print(f"Error: File '{filename}' not found.")
         return None
 
-# def show_text():
-#     print(loadPDF(filename="../sample.pdf"))
-
-# show_text()

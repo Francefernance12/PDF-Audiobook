@@ -1,7 +1,5 @@
 from google.cloud import texttospeech
-from app.pdf_utils import loadPDF
 import os
-from threading import Thread, Lock
 
 
 class GoogleTTS:
@@ -44,13 +42,9 @@ class GoogleTTS:
             audio_config=audio_config
         )
         self.create_audio(response)
-        
+
     def create_audio(self, response):
         # TODO: Make sure the user is able play the audio from the app instead of downloading it
         with open("output.mp3", "wb") as output:
             output.write(response.audio_content)
             print("Audio content written to file 'output.mp3'")
-            # start_mp3_player = Thread(target=play_mp3, args=(output,))
-            # start_mp3_player.start()
-            # if os.path.exists("output.mp3"):
-            #     os.remove("output.mp3")

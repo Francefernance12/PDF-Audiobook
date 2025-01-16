@@ -16,6 +16,7 @@ from app.pdf_utils import loadPDF
 from app.google_tts import GoogleTTS
 from app.mp3Player import MP3Player
 
+
 # Intro splash screen
 class SplashScreen(Screen):
     def on_enter(self, *args):
@@ -79,6 +80,9 @@ class MainScreen(Screen):
             text_screen.text = pdf_content
             text_screen.has_pdf = True
 
+            # check if mp3 exists in google cloud bucket
+
+            # remove old mp3
             if os.path.exists("output.mp3"):
                 os.remove("output.mp3")
 
@@ -93,7 +97,7 @@ class MainScreen(Screen):
         self.manager.current = "text"
 
 
-# Loading popup
+# Loading waiting popup
 class loading_tts_popup(Popup):
     pass
 
@@ -136,6 +140,7 @@ class TextScreen(Screen):
                 self.play_thread.daemon = True
                 self.play_thread.start()
                 Clock.schedule_interval(self.check_thread_done, 0.1)
+
             except Exception as e:
                 print(f"Error creating audio: {str(e)}")
                 traceback.print_exc()
