@@ -11,17 +11,17 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from threading import Thread
 import traceback
 import os
-# Project Files
-from app.pdf_utils import loadPDF
-from app.google_tts import GoogleTTS
-from app.mp3Player import MP3Player
+# Local imports
+from app import GoogleTTS, MP3Player, loadPDF
 
 
 # Intro splash screen
 class SplashScreen(Screen):
+    # once User enters the app
     def on_enter(self, *args):
         Clock.schedule_once(self.switch_to_main, 3)
 
+    # switch to main screen
     def switch_to_main(self, *args):
         # Switch to the main screen
         self.manager.current = "main"
