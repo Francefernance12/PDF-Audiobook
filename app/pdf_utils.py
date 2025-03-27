@@ -49,7 +49,6 @@ def loadPDF(filename):
             if len(text.encode('utf-8')) > 5000:
                 print("Text is too long. Limiting to 5000 characters.")
                 text = text[:5000]  # Limit to 5000 characters
-                print(text)
             return text
         
     except FileNotFoundError:
