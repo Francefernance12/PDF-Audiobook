@@ -8,6 +8,7 @@ from kivy.uix.button import Button
 from kivy.graphics import Color, RoundedRectangle
 from kivy.clock import Clock
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
+from kivy.metrics import dp
 # Other
 from threading import Thread
 import traceback
@@ -20,7 +21,7 @@ from app import GoogleTTS, MP3Player, loadPDF
 class SplashScreen(Screen):
     # splash screen appears for 3 seconds
     def on_enter(self, *args):
-        Clock.schedule_once(self.switch_to_main, 3)
+        Clock.schedule_once(self.switch_to_main, 5)
 
     # Eventually switch to main screen
     def switch_to_main(self, *args):
@@ -47,50 +48,57 @@ class MainScreen(Screen):
         popup.open()
     
     # Temporarily disabled
-    # # Dynamic Button
-    # def create_audiobook_button(self):
-    #     # Get the container and buttons
-    #     audiobook_button_container = self.ids.audiobook_button
-    #     choose_file_button = self.ids.choose_file_button
-
-    #     # Avoid duplicates
-    #     if any(isinstance(child, Button) for child in audiobook_button_container.children):
-    #         return
-
-    #     # Dynamic button creation
-    #     audiobook_button_layout = Button(
-    #         text='Audiobook Player',
-    #         size_hint_x=1,
-    #         pos_hint={'center_x': 0.5, 'center_y': 0.5},
-    #         background_color=(0, 0, 0, 0), # blue background (#1C4983)
-    #         background_normal='',
-    #         color=(232/255, 241/255, 255/255, 1),  # Light text (#e8f1ff)
-    #         padding=[24, 16],
-    #         font_size="20sp",
-    #         font_name="./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
-    #     )
-
-    #     # Create new canvas
-    #     audiobook_button_layout.canvas.before.clear()
-    #     with audiobook_button_layout.canvas.before:
-    #         Color(46/255, 93/255, 159/255, 1) 
-    #         rectangle = RoundedRectangle(pos=audiobook_button_layout.pos, 
-    #                          size=audiobook_button_layout.size, 
-    #                          radius=[15, 15, 15, 15])
+    # Dynamic Button
+    def create_audiobook_button(self):
+        # Get the container and buttons
+        buttons_container = self.ids.buttons_container
+        audiobook_button_container = self.ids.audiobook_button
+        choose_file_button = self.ids.choose_file_button        
         
-    #     # bind position and size to the button and text
-    #     audiobook_button_layout.bind(pos=lambda instance, value: setattr(rectangle, 'pos', value))
-    #     audiobook_button_layout.bind(size=lambda instance, value: setattr(rectangle, 'size', value))
+        # Avoid duplicates
+        if any(isinstance(child, Button) for child in audiobook_button_container.children):
+            return
+
+        # Dynamic button creation
+        audiobook_button_layout = Button(
+            text='Audio Player',
+            size_hint=(None, None),
+            size=(dp(150), dp(40)),  
+            background_color=(0, 0, 0, 0),
+            background_normal='',
+            color=(232/255, 241/255, 255/255, 1),  # Light text (#e8f1ff)
+            padding=(dp(24), dp(16)),  
+            font_size="18sp",
+            font_name="./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
+        )
+
+        # Create new canvas
+        audiobook_button_layout.canvas.before.clear()
+        with audiobook_button_layout.canvas.before:
+            Color(31/255, 68/255, 106/255, 1) 
+            rounded_rect = RoundedRectangle(
+                pos=audiobook_button_layout.pos,
+                size=audiobook_button_layout.size,
+                radius=[15, 15, 15, 15]
+            )
         
-    #     # add button to container
-    #     audiobook_button_container.add_widget(audiobook_button_layout)
+        # bind position and size to the button and text
+        def update_rounded_rect(instance, value):
+            rounded_rect.pos = instance.pos
+            rounded_rect.size = instance.size
 
-    #     # adjust size hint
-    #     choose_file_button.size_hint_x = 0.5
-    #     audiobook_button_container.size_hint_x = 0.5
+        audiobook_button_layout.bind(pos=update_rounded_rect, size=update_rounded_rect)
+        audiobook_button_layout.bind(on_press=self.switch_to_screen)
 
-    #     # onpress listener
-    #     audiobook_button_layout.on_press = self.switch_to_screen
+        # Button container properties
+        audiobook_button_container.add_widget(audiobook_button_layout)
+        audiobook_button_container.opacity = 1
+
+        # Center the container for the buttons
+        buttons_container.pos_hint = {'center_x': 0.8, 'center_y': 0.5}
+
+        # onpress listener
+        # audiobook_button_layout.bind(on_press=self.switch_to_screen)
         
 
     # Load the selected PDF file
@@ -104,7 +112,7 @@ class MainScreen(Screen):
 
         try:
             # Create audiobook button once PDF selected
-            # self.create_audiobook_button()
+            self.create_audiobook_button()
 
             # Change string property after selecting path
             full_file_path = os.path.join(path, selection[0])

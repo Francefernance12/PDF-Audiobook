@@ -8,10 +8,10 @@
             size: self.size
     BoxLayout:
         orientation: "vertical"
-        spacing: 30
-        padding: 50
-        size_hint: None, None
-        size: 812, 600
+        spacing: dp(30)
+        padding: dp(50)
+        size_hint: 1, 1
+        # size: dp(812), dp(600)
 
         Label:
             text: "Welcome to AudioBook!"
@@ -24,7 +24,7 @@
 
         Label:
             text: "Loading..."
-            font_size: "20sp"
+            font_size: "16sp"
             font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
             color: 0.7, 0.7, 0.7, 1  # Light gray text (#B3B3B3)
             halign: 'center'
@@ -44,10 +44,9 @@
     BoxLayout:
         # Screen properties
         orientation: 'vertical'
-        padding: 30
-        spacing: 20
-        size_hint: None, None
-        size: 812, 600
+        padding: dp(30)
+        spacing: dp(40)
+        size_hint: 1, 1
 
         # Title
         Label:
@@ -55,15 +54,19 @@
             font_size: '32sp'
             font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
             size_hint_y: None
-            height: '60dp'
+            height: dp(60)
             color: 0.92, 0.92, 0.92, 1  # Soft white text (#EAEAEA)
             bold: True
 
         # Content area
         BoxLayout:
             orientation: 'vertical'
-            size_hint_y: 0.7
-            padding: 20
+            size_hint: 0.9, 0.9
+            halign: 'center'
+            valign: 'start'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            padding: dp(20)
+
             canvas.before:
                 Color:
                     rgba: 0.12, 0.12, 0.12, 1  # Dark gray (#1F1F1F)
@@ -83,9 +86,10 @@
                 text_size: self.width - dp(40), None
                 size_hint_y: None
                 font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
+                font_size: "18sp"
                 height: self.texture_size[1]
                 color: 0.92, 0.92, 0.92, 1  # Light text (#EAEAEA)
-                padding: 20, 20
+                padding: dp(20), dp(20)
                 halign: 'center'
                 valign: 'middle'
                 pos_hint: {'center_x': 0.5}
@@ -93,9 +97,10 @@
             Label:
                 text: root.file_path
                 size_hint_y: None
-                text_size: self.width - dp(40), None
+                text_size: self.width, None
                 font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
-                height: '40dp'
+                font_size: "16sp"
+                height: dp(40)
                 halign: 'center'
                 valign: 'middle'
                 pos_hint: {'center_x': 0.5}
@@ -103,29 +108,27 @@
 
         # Buttons container
         BoxLayout:
-            orientation: 'vertical'
-            size_hint: None, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            halign: 'center'
-            valign: 'middle'
-            height: '50dp'
-            padding: (dp(10), dp(10))
+            id: buttons_container
+            orientation: 'horizontal'
+            size_hint: None, None
+            pos_hint: {'center_x': 0.93, 'center_y': 0.5}
+            height: dp(50)
+            width: self.parent.width 
+            padding: dp(10)
+            spacing: dp(40)  # Increased spacing between buttons
+
 
             # Choose file button
             Button:
-                # id: choose_file_button
+                id: choose_file_button
                 text: 'Choose a File'
                 size_hint: None, None
-                size_hint_y: None
-                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-                halign: 'center'
-                valign: 'middle'
                 size: dp(150), dp(40)
                 background_color: 0, 0, 0, 0  
                 background_normal: ''
-                color: 0.92, 0.92, 0.92, 1  # Soft white text (#EAEAEA)
-                padding: [24, 16]
-                font_size: "20sp"
+                color: 0.92, 0.92, 0.92, 1
+                padding: dp(24), dp(16)
+                font_size: "18sp"
                 font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
                 on_press: root.open_file()
 
@@ -138,47 +141,58 @@
                         radius: [15, 15, 15, 15]
 
             # Dynamic Audiobook button
-            # BoxLayout:
-            #     id: audiobook_button
-            #     size_hint_x: 0  # Hidden
+            BoxLayout:
+                id: audiobook_button
+                opacity: 0
+                size_hint: None, None
 
 
 # Displays PDF content
 <TextScreen>:
+
     canvas.before:
         Color:
             rgba: 0.1, 0.1, 0.1, 1  # Dark background (#191919)
         Rectangle:
             pos: self.pos
             size: self.size
+
     BoxLayout:
         orientation: 'vertical'
-        padding: 30
-        spacing: 20
-        size_hint: None, None
-        size: 812, 600
+        padding: dp(30)
+        spacing: dp(40)
+        size_hint: 1, 1
+
 
         # Title
         Label:
-            text: 'Audiobook Player'
+            text: 'Audio Player'
             font_size: '32sp'
             font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
             size_hint_y: None
-            height: '60dp'
+            height: dp(60)
             color: 0.92, 0.92, 0.92, 1  # Soft white text (#EAEAEA)
             bold: True
 
         # Text content area
         ScrollView:
-            size_hint_y: 0.85
+            orientation: 'vertical'
+            size_hint: 0.9, 0.9
+            halign: 'center'
+            valign: 'start'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            padding: dp(20)
+            
+            # Scroll view properties
             do_scroll_x: False
-            bar_width: 10
+            bar_width: dp(10)
             bar_color: 0.92, 0.92, 0.92, 1  # Light scrollbar (#EAEAEA)
             bar_inactive_color: 0.92, 0.92, 0.92, 1
             effect_cls: "ScrollEffect"
+            
             canvas.before:
                 Color:
-                    rgba: 0.15, 0.15, 0.15, 1  # Slightly lighter dark background (#262626)
+                    rgba: 0.12, 0.12, 0.12, 1  # Dark gray (#1F1F1F)
                 RoundedRectangle:
                     pos: self.pos
                     size: self.size
@@ -189,30 +203,41 @@
                 text_size: self.width - dp(40), None
                 size_hint_y: None
                 font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
+                font_size: "18sp"
                 height: self.texture_size[1]
-                padding: 20, 20
-                color: 0.92, 0.92, 0.92, 1  # Soft white text (#EAEAEA)
+                color: 0.92, 0.92, 0.92, 1  # Light text (#EAEAEA)
+                padding: dp(20), dp(20)
+                halign: 'center'
+                valign: 'middle'
+                pos_hint: {'center_x': 0.5}
 
         # Button container
+        #BoxLayout:
+            #orientation: 'horizontal'
+            #size_hint: 1, None
+            #size: self.parent.width, dp(60)  # Container size
+            #pos_hint: {'center_x': 0.68, 'center_y': 0.5}
+            #padding: dp(10)
+
+        # Button Container
         BoxLayout:
-            orientation: 'vertical'
-            size_hint: (None, None)
-            size: dp(200), dp(180)  # Adjusted for 3 buttons with spacing
-            spacing: dp(15)  # Space between buttons
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            orientation: 'horizontal'
+            size_hint: None, None
+            height: dp(50)
+            width: self.parent.width 
+            pos_hint: {'center_x': 0.73, 'center_y': 0.5}
             padding: dp(10)
+            spacing: dp(40)
 
             # Play button
             Button:
                 text: 'Play'
-                size_hint: (1, 1)  # Take equal space in the box
-                size: dp(150), dp(40)
-                padding: [24, 16]
-
+                size_hint: None, None
+                size: dp(120), dp(40)
+                padding: dp(24), dp(16)
                 background_color: 0, 0, 0, 0 
                 background_normal: ''
-
-                font_size: "20sp"
+                font_size: "18sp"
                 font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
                 color: 0.92, 0.92, 0.92, 1  # Soft white text (#EAEAEA)
 
@@ -228,17 +253,19 @@
                         pos: self.pos
                         size: self.size
                         radius: [15, 15, 15, 15]  
-            
+
             # Stop button
             Button:
                 text: 'Stop'
-                size_hint: (1, 1)  # Take equal space in the box
+                size_hint: None, None
+                size: dp(120), dp(40)  # Reduced button width
+                padding: dp(24), dp(16)  # Reduced padding
+
                 background_color: 0, 0, 0, 0 
                 background_normal: ''
-                padding: [24, 16]
-                font_size: "20sp"
+                font_size: "18sp"
                 font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
-                size: dp(150), dp(40) 
+                size: dp(120), dp(40)  # Reduced button width
                 color: 0.92, 0.92, 0.92, 1  # Soft white text (#EAEAEA)
                 on_press: root.stop_audio()
                 canvas.before:
@@ -247,18 +274,20 @@
                     RoundedRectangle:
                         pos: self.pos
                         size: self.size
-                        radius: [15, 15, 15, 15]  # Increased radius for better mobile look
-            
+                        radius: [15, 15, 15, 15]  
+
             # Back button
             Button:
                 text: 'Back to Main'
-                size_hint: (1, 1)  # Take equal space in the box
+                size_hint: None, None
+                size: dp(160), dp(40)  # Slightly wider for text
+                padding: dp(24), dp(16)  # Reduced padding
+
                 background_color: 0, 0, 0, 0 
                 background_normal: ''
-                padding: [24, 16]
-                font_size: "20sp"
+                font_size: "18sp"
                 font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
-                size: dp(150), dp(40) 
+                size: dp(160), dp(40)  # Slightly wider for text
                 color: 0.92, 0.92, 0.92, 1  # Soft white text (#EAEAEA)
 
                 # States
@@ -270,7 +299,7 @@
                     RoundedRectangle:
                         pos: self.pos
                         size: self.size
-                        radius: [15, 15, 15, 15]  # Increased radius for better mobile look
+                        radius: [15, 15, 15, 15]  
 
 
 ####### Popups
@@ -286,8 +315,8 @@
 
     BoxLayout:
         orientation: 'vertical'
-        padding: 20
-        spacing: 10
+        padding: dp(20)
+        spacing: dp(10)
 
         FileChooserListView:
             id: filechooser
@@ -300,11 +329,11 @@
         # Button Layouts
         BoxLayout:
             size_hint: None, None
-            width: dp(350)  # Set width based on button sizes + spacing
+            width: dp(350)  
             height: dp(50)
-            spacing: dp(50)  # Reduce excessive spacing
+            spacing: dp(40)  
             orientation: 'horizontal'
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}  # Ensure it's centered
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}  
 
             Button:
                 text: 'Cancel'
@@ -312,9 +341,9 @@
                 background_normal: ''
                 size_hint: None, None
 
-                font_size: "20sp"
+                font_size: "18sp"
                 font_name: './app/Fonts/Roboto_SemiCondensed-Medium.ttf'
-                padding: [24, 16]
+                padding: dp(24), dp(16)
                 color: 0.92, 0.92, 0.92, 1  # Soft white text (#EAEAEA)
                 size: dp(150), dp(40)  
                 on_press: root.dismiss()
@@ -334,11 +363,11 @@
                 background_normal: ''
                 size_hint: None, None
 
-                font_size: "20sp"
+                font_size: "18sp"
                 font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
                 size: dp(150), dp(40)  
                 color: 0.92, 0.92, 0.92, 1  # Soft white text (#EAEAEA)
-                padding: [24, 16]
+                padding: dp(24), dp(16)
 
                 # loads the object property
                 on_press: 
@@ -381,4 +410,3 @@
             halign: 'center'
             valign: 'middle'
             height: self.texture_size[1]
-
