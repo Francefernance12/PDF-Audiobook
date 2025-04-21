@@ -21,7 +21,7 @@ from app import GoogleTTS, MP3Player, loadPDF
 class SplashScreen(Screen):
     # splash screen appears for 3 seconds
     def on_enter(self, *args):
-        Clock.schedule_once(self.switch_to_main, 5)
+        Clock.schedule_once(self.switch_to_main, 3)
 
     # Eventually switch to main screen
     def switch_to_main(self, *args):
@@ -37,8 +37,8 @@ class FileSelectorPopup(Popup):
 """Main screen"""
 class MainScreen(Screen):
     # Labels
-    file_path = StringProperty("No file selected")
-    file_select_state = StringProperty("Tap the button below to choose a PDF file and generate an audiobook.")
+    file_path = StringProperty("No PDF selected")
+    file_select_state = StringProperty("Choose a PDF file and start listening in seconds.")
 
     def open_file(self):
         # Open the file selector popup
@@ -50,8 +50,9 @@ class MainScreen(Screen):
     # Temporarily disabled
     # Dynamic Button
     def create_audiobook_button(self):
-        # Get the container and buttons
+        # Buttons container
         buttons_container = self.ids.buttons_container
+        # Buttons
         audiobook_button_container = self.ids.audiobook_button
         choose_file_button = self.ids.choose_file_button        
         
@@ -93,6 +94,7 @@ class MainScreen(Screen):
         # Button container properties
         audiobook_button_container.add_widget(audiobook_button_layout)
         audiobook_button_container.opacity = 1
+        choose_file_button.text = "Select New PDF"
 
         # Center the container for the buttons
         buttons_container.pos_hint = {'center_x': 0.8, 'center_y': 0.5}
@@ -117,7 +119,7 @@ class MainScreen(Screen):
             # Change string property after selecting path
             full_file_path = os.path.join(path, selection[0])
             self.file_path = selection[0]
-            self.file_select_state = "Load another PDF file to generate an audiobook."
+            self.file_select_state = "Load a new PDF to create your next audiobook."
             print(f"Attempting to load: {self.file_path}")
             
             # Dismiss selector popup
@@ -130,7 +132,7 @@ class MainScreen(Screen):
                 return 
             # Change Label
             fix_file_path = full_file_path.replace('\\', '/')
-            self.file_path = f"Recent file: {fix_file_path.split('/')[-1] if '/' in fix_file_path else fix_file_path.split('//')[-1]}"
+            self.file_path = f"Last file converted: {fix_file_path.split('/')[-1] if '/' in fix_file_path else fix_file_path.split('//')[-1]}"
 
 
             # display text count

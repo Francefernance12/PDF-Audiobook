@@ -14,7 +14,7 @@
         # size: dp(812), dp(600)
 
         Label:
-            text: "Welcome to AudioBook!"
+            text: "Welcome to PDF Audiobook"
             font_size: "36sp"
             font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
             color: 0.92, 0.92, 0.92, 1  # Light text (#EAEAEA)
@@ -23,7 +23,7 @@
             valign: 'middle'
 
         Label:
-            text: "Loading..."
+            text: "Setting things up…"
             font_size: "16sp"
             font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
             color: 0.7, 0.7, 0.7, 1  # Light gray text (#B3B3B3)
@@ -121,7 +121,7 @@
             # Choose file button
             Button:
                 id: choose_file_button
-                text: 'Choose a File'
+                text: 'Select PDF File'
                 size_hint: None, None
                 size: dp(150), dp(40)
                 background_color: 0, 0, 0, 0  
@@ -178,8 +178,8 @@
         ScrollView:
             orientation: 'vertical'
             size_hint: 0.9, 0.9
-            halign: 'center'
-            valign: 'start'
+            halign: 'left'
+            valign: 'top'
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
             padding: dp(20)
             
@@ -207,7 +207,7 @@
                 height: self.texture_size[1]
                 color: 0.92, 0.92, 0.92, 1  # Light text (#EAEAEA)
                 padding: dp(20), dp(20)
-                halign: 'center'
+                halign: 'left'
                 valign: 'middle'
                 pos_hint: {'center_x': 0.5}
 
@@ -231,7 +231,7 @@
 
             # Play button
             Button:
-                text: 'Play'
+                text: 'Play Audio'
                 size_hint: None, None
                 size: dp(120), dp(40)
                 padding: dp(24), dp(16)
@@ -256,7 +256,7 @@
 
             # Stop button
             Button:
-                text: 'Stop'
+                text: 'Stop Audio'
                 size_hint: None, None
                 size: dp(120), dp(40)  # Reduced button width
                 padding: dp(24), dp(16)  # Reduced padding
@@ -278,7 +278,7 @@
 
             # Back button
             Button:
-                text: 'Back to Main'
+                text: 'Back to Home'
                 size_hint: None, None
                 size: dp(160), dp(40)  # Slightly wider for text
                 padding: dp(24), dp(16)  # Reduced padding
@@ -305,7 +305,7 @@
 ####### Popups
 # The popup window/root
 <FileSelectorPopup@Popup>:
-    title: 'Select a PDF File'
+    title: 'Choose a PDF to Convert'
     title_color: 0.92, 0.92, 0.92, 1  # Soft white text (#EAEAEA)
     title_size: '20sp'
     size_hint: 0.8, 0.8
@@ -358,7 +358,7 @@
 
 
             Button:
-                text: 'Load'
+                text: 'Convert'
                 background_color: 0, 0, 0, 0 
                 background_normal: ''
                 size_hint: None, None
@@ -385,7 +385,7 @@
 
 # Loading popup after creating audio
 <loading_tts_popup@Popup>:
-    title: 'Creating Audio'
+    title: 'Converting to Audio'
     title_color: 0.92, 0.92, 0.92, 1  # Soft white (#EAEAEA)
     title_size: '20sp'
     size_hint: 0.5, 0.3
@@ -397,16 +397,15 @@
         orientation: 'vertical'
         padding: dp(20)
         spacing: dp(10)
-        size_hint_y: None
-        height: self.minimum_height
+        size_hint_y: 1
 
         Label:
-            text: 'Please wait while the audio is being created...'
+            text: 'Your audiobook is on its way...'
             color: 0.92, 0.92, 0.92, 1  # Soft white text (#EAEAEA)
             font_size: '16sp'
             font_name: "./app/Fonts/Roboto_SemiCondensed-Medium.ttf"
-            text_size: self.width - dp(40), None
-            size_hint_y: None
+            text_size: self.width, None
+            size_hint_y: 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
             halign: 'center'
             valign: 'middle'
-            height: self.texture_size[1]
